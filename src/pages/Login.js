@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import PropTypes from 'prop-types';
 import AppIcon from '../images/icon.png';
@@ -23,7 +23,13 @@ const Login = (props) => {
   const dispatch = useDispatch();
 
   const { classes } = props;
-  let loading = useSelector((state) => state.UI.loading);
+  let UIState = useSelector((state) => state.UI);
+
+  useEffect(() => {
+    if (UIState.errors) {
+      setErrors(UIState.errors);
+    }
+  }, [UIState]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -82,11 +88,13 @@ const Login = (props) => {
             variant="contained"
             color="primary"
             className={classes.button}
-            disabled={loading}
-            onClick={handleSubmit}
+            disabled={UIState.loading}
           >
-            {loading ? (
-              <CircularProgress size={30} className={classes.progress} />
+            {UIState.loading ? (
+              <CircularProgress
+                size={30}
+                className={{ minHeight: 40, ...classes.progress }}
+              />
             ) : (
               'Login'
             )}
@@ -112,33 +120,8 @@ Login.propTypes = {
   UI: PropTypes.object.isRequired
 };
 
-const styles = {
-  form: {
-    textAlign: 'center'
-  },
-  image: {
-    margin: '10px auto'
-  },
-  pageTitle: {
-    margin: '10px auto'
-  },
-  textField: {
-    margin: '10px auto'
-  },
-  button: {
-    minHeight: 40,
-    minWidth: 80,
-    marginTop: 20,
-    position: 'relative'
-  },
-  progress: {
-    position: 'absolute'
-  },
-  customError: {
-    marginTop: 10,
-    color: 'red',
-    fontSize: '0.8rem'
-  }
-};
+const styles = (theme) => ({
+  ...theme.spreadTheme
+});
 
 export default withStyles(styles)(Login);

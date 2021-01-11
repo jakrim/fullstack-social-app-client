@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import PropTypes from 'prop-types';
 import AppIcon from '../images/icon.png';
-import axios from 'axios';
-import { baseURL } from '../utils/env';
+
+// Redux imports
+import { useSelector, useDispatch } from 'react-redux';
+import * as userActions from '../redux/actions/userActions';
 
 // MUI Imports
 import Grid from '@material-ui/core/Grid';
@@ -14,36 +16,31 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 const Link = require('react-router-dom').Link;
 
 const Signup = (props) => {
-  const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [handle, setHandle] = useState('');
+  const dispatch = useDispatch();
 
   const { classes } = props;
+  let UIState = useSelector((state) => state.UI);
+
+  useEffect(() => {
+    if (UIState.errors) {
+      setErrors(UIState.errors);
+    }
+  }, [UIState]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setLoading(true);
     const newUserData = {
       email,
       password,
       confirmPassword,
       handle
     };
-    axios
-      .post(baseURL + '/signup', newUserData)
-      .then((res) => {
-        localStorage.setItem('FBIdToken', `Bearer ${res.data.token}`);
-        setLoading(false);
-        props.history.push('/');
-      })
-      .catch((err) => {
-        setErrors(err.response.data);
-        console.log('ERRORS: ', err.response.data);
-        setLoading(false);
-      });
+    dispatch(userActions.signupUser(newUserData, props.history));
   };
 
   const handleEmailChange = (event) => {
@@ -122,9 +119,9 @@ const Signup = (props) => {
             variant="contained"
             color="primary"
             className={classes.button}
-            disabled={loading}
+            disabled={UIState.loading}
           >
-            {loading ? (
+            {UIState.loading ? (
               <CircularProgress size={30} className={classes.progress} />
             ) : (
               'Signup'
@@ -145,36 +142,13 @@ const Signup = (props) => {
 };
 
 Signup.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
+  UI: PropTypes.object.isRequired,
+  logoutUser: PropTypes.func.isRequired
 };
-
-const styles = {
-  form: {
-    textAlign: 'center'
-  },
-  image: {
-    margin: '10px auto'
-  },
-  pageTitle: {
-    margin: '10px auto'
-  },
-  textField: {
-    margin: '10px auto'
-  },
-  button: {
-    minHeight: 40,
-    minWidth: 80,
-    marginTop: 20,
-    position: 'relative'
-  },
-  progress: {
-    position: 'absolute'
-  },
-  customError: {
-    marginTop: 10,
-    color: 'red',
-    fontSize: '0.8rem'
-  }
-};
+const styles = (theme) => ({
+  ...theme.spreadTheme
+});
 
 export default withStyles(styles)(Signup);

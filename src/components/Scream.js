@@ -12,23 +12,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 const Link = require('react-router-dom').Link;
 
-const styles = {
-  card: {
-    display: 'flex',
-    marginBottom: 20,
-    borderRadius: 8
-  },
-  image: {
-    minWidth: 200
-  },
-  content: {
-    padding: 25,
-    objectFit: 'cover'
-  }
-};
-
-const Scream = (props) => {
-  const { classes, scream } = props;
+const Scream = ({ classes, scream }) => {
   dayjs.extend(relativeTime);
   return (
     <Card className={classes.card}>
@@ -55,6 +39,21 @@ const Scream = (props) => {
       </CardContent>
     </Card>
   );
+};
+
+const styles = {
+  card: {
+    display: 'flex',
+    marginBottom: 20,
+    borderRadius: 8
+  },
+  image: {
+    minWidth: 200
+  },
+  content: {
+    padding: 25,
+    objectFit: 'cover'
+  }
 };
 
 export default withStyles(styles)(Scream);

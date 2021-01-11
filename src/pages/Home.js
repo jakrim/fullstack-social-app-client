@@ -3,6 +3,7 @@ import axios from 'axios';
 import Grid from '@material-ui/core/Grid';
 import { baseURL } from '../utils/env';
 import Scream from '../components/Scream';
+import Profile from '../components/Profile';
 
 const Home = (props) => {
   const [screams, setScreams] = useState([]);
@@ -16,10 +17,6 @@ const Home = (props) => {
     if (mount) {
       async function fetchScreams() {
         await axios.get(baseURL + '/screams').then(({ data }) => {
-          console.log(
-            '🚀 ~ file: Home.js ~ line 22 ~ fetchScreams ~ screams',
-            data
-          );
           setScreams(data);
         });
       }
@@ -42,7 +39,7 @@ const Home = (props) => {
         {recentScreamsMarkup}
       </Grid>
       <Grid item sm={4} xs={12}>
-        <p>Profile...</p>
+        <Profile />
       </Grid>
     </Grid>
   );
