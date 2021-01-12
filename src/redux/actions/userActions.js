@@ -96,7 +96,22 @@ export const uploadImage = (formData) => {
         .post(baseURL + '/user/image', formData)
         .then(() => {
           dispatch(getUserData());
-          console.log('Here dispatching ');
+        })
+        .catch((err) => console.log(err));
+    } catch (err) {
+      console.log('Error in try-catch block', err);
+    }
+  };
+};
+
+export const editUserDetails = (userDetails) => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({ type: LOADING_USER });
+      axios
+        .post(baseURL + '/user', userDetails)
+        .then(() => {
+          dispatch(getUserData());
         })
         .catch((err) => console.log(err));
     } catch (err) {

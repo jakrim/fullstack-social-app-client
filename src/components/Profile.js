@@ -4,22 +4,20 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import PropTypes from 'prop-types';
 import * as userActions from '../redux/actions/userActions';
+import EditDetails from './EditDetails';
 
 // Redux Imports
 import { useSelector, useDispatch } from 'react-redux';
 
-// MUI Imports
+// Icons
 import LocationOn from '@material-ui/icons/LocationOn';
 import LinkIcon from '@material-ui/icons/Link';
 import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
+import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
 import CalendarToday from '@material-ui/icons/CalendarToday';
+// MUI Imports
 import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import MuiLink from '@material-ui/core/Link';
@@ -52,6 +50,9 @@ const Profile = ({ classes, loading }) => {
   const handleEditPicture = () => {
     const fileInput = document.getElementById('imageInput');
     fileInput.click();
+  };
+  const handleLogout = () => {
+    dispatch(userActions.logoutUser());
   };
 
   let profileMarkup = !loading ? (
@@ -104,6 +105,12 @@ const Profile = ({ classes, loading }) => {
             <CalendarToday color="primary" />{' '}
             <span>Joined {dayjs(createdAt).format('MMM YYYY')}</span>
           </div>
+          <Tooltip title="Logout" placement="bottom">
+            <IconButton onClick={handleLogout}>
+              <KeyboardReturn color="primary" />
+            </IconButton>
+          </Tooltip>
+          <EditDetails />
         </div>
       </Paper>
     ) : (
@@ -136,6 +143,13 @@ const Profile = ({ classes, loading }) => {
   );
 
   return profileMarkup;
+};
+
+Profile.propTypes = {
+  classes: PropTypes.object.isRequired,
+  logoutUser: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
+  uploadImage: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(Profile);
