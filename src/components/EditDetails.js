@@ -1,27 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
-import PropTypes from 'prop-types';
 import * as userActions from '../redux/actions/userActions';
 
 // Redux Imports
 import { useSelector, useDispatch } from 'react-redux';
 
 // Icons
-import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 
 // MUI Imports
 import Button from '@material-ui/core/Button';
-import Tooltip from '@material-ui/core/Tooltip';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-const Link = require('react-router-dom').Link;
+import StyledButton from '../utils/StyledButton';
 
 const styles = (theme) => ({
-  ...theme.spreadTheme
+  ...theme.spreadTheme,
+  button: {
+    float: 'right'
+  }
 });
 
 const EditDetails = (props) => {
@@ -71,11 +71,13 @@ const EditDetails = (props) => {
 
   return (
     <>
-      <Tooltip title="Edit details" placement="bottom">
-        <IconButton onClick={handleOpen} className={classes.button}>
-          <EditIcon color="primary" />
-        </IconButton>
-      </Tooltip>
+      <StyledButton
+        tip="Edit details"
+        onClick={handleOpen}
+        btnClassName={classes.button}
+      >
+        <EditIcon color="primary" />
+      </StyledButton>
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
         <DialogTitle>Edit your details</DialogTitle>
         <DialogContent>
@@ -125,11 +127,6 @@ const EditDetails = (props) => {
       </Dialog>
     </>
   );
-};
-
-EditDetails.propTypes = {
-  editUserDetails: PropTypes.func.isRequired,
-  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(EditDetails);

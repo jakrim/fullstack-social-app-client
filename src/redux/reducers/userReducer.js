@@ -1,13 +1,14 @@
 import {
   SET_USER,
-  SET_ERRORS,
-  CLEAR_ERRORS,
-  LOADING_UI,
+  // SET_ERRORS,
+  // CLEAR_ERRORS,
+  // LOADING_UI,
   LOADING_USER,
   SET_AUTHENTICATED,
-  SET_UNAUTHENTICATED
+  SET_UNAUTHENTICATED,
+  LIKE_SCREAM,
+  UNLIKE_SCREAM
 } from '../types';
-import axios from 'axios';
 
 const initialState = {
   authenticated: false,
@@ -36,6 +37,24 @@ export default function (state = initialState, action) {
       return {
         ...state,
         loading: true
+      };
+    case LIKE_SCREAM:
+      return {
+        ...state,
+        likes: [
+          ...state.likes,
+          {
+            userHandle: state.creddentials.handle,
+            screamId: action.payload.screamId
+          }
+        ]
+      };
+    case UNLIKE_SCREAM:
+      return {
+        ...state,
+        likes: state.likes.filter(
+          (like) => like.screamId === action.payload.screamId
+        )
       };
     default:
       return state;

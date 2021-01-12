@@ -1,12 +1,10 @@
-import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
 import ReduxThunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 import dataReducer from './reducers/dataReducer';
 import userReducer from './reducers/userReducer';
 import uiReducer from './reducers/uiReducer';
-
-const initialState = {};
 
 const rootReducer = combineReducers({
   data: dataReducer,
@@ -19,7 +17,6 @@ const composeEnhancers = composeWithDevTools({ realtime: true, port: 3000 });
 
 const store = createStore(
   rootReducer,
-  initialState,
   composeEnhancers(applyMiddleware(...middleware))
 );
 

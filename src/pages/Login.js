@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import PropTypes from 'prop-types';
 import AppIcon from '../images/icon.png';
-import axios from 'axios';
 
 // Redux imports
 import { useSelector, useDispatch } from 'react-redux';
@@ -114,10 +113,7 @@ const Login = (props) => {
 };
 
 Login.propTypes = {
-  classes: PropTypes.object.isRequired,
-  loginUser: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired,
-  UI: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired
 };
 
 const styles = (theme) => ({

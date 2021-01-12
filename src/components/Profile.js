@@ -1,8 +1,6 @@
 import React from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
-import PropTypes from 'prop-types';
 import * as userActions from '../redux/actions/userActions';
 import EditDetails from './EditDetails';
 
@@ -12,7 +10,6 @@ import { useSelector, useDispatch } from 'react-redux';
 // Icons
 import LocationOn from '@material-ui/icons/LocationOn';
 import LinkIcon from '@material-ui/icons/Link';
-import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
 import CalendarToday from '@material-ui/icons/CalendarToday';
@@ -21,16 +18,17 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import MuiLink from '@material-ui/core/Link';
-import Tooltip from '@material-ui/core/Tooltip';
+import StyledButton from '../utils/StyledButton';
 const Link = require('react-router-dom').Link;
 
 const styles = (theme) => ({
   ...theme.spreadTheme
 });
 
-const Profile = ({ classes, loading }) => {
+const Profile = ({ classes }) => {
   const dispatch = useDispatch();
   let user = useSelector((state) => state.user);
+  let loading = useSelector((state) => state.user.loading);
   let {
     handle,
     createdAt,
@@ -67,11 +65,13 @@ const Profile = ({ classes, loading }) => {
               hidden="hidden"
               onChange={handleImageChange}
             />
-            <Tooltip title="Edit profile picture" placement="left">
-              <IconButton onClick={handleEditPicture} className="button">
-                <EditIcon color="primary" />
-              </IconButton>
-            </Tooltip>
+            <StyledButton
+              tip="Edit profile picture"
+              onClick={handleEditPicture}
+              btnClassName="button"
+            >
+              <EditIcon color="primary" />
+            </StyledButton>
           </div>
           <hr />
           <div className="profile-details">
@@ -105,11 +105,9 @@ const Profile = ({ classes, loading }) => {
             <CalendarToday color="primary" />{' '}
             <span>Joined {dayjs(createdAt).format('MMM YYYY')}</span>
           </div>
-          <Tooltip title="Logout" placement="bottom">
-            <IconButton onClick={handleLogout}>
-              <KeyboardReturn color="primary" />
-            </IconButton>
-          </Tooltip>
+          <StyledButton tip="Logout" onClick={handleLogout}>
+            <KeyboardReturn color="primary" />
+          </StyledButton>
           <EditDetails />
         </div>
       </Paper>
@@ -143,13 +141,6 @@ const Profile = ({ classes, loading }) => {
   );
 
   return profileMarkup;
-};
-
-Profile.propTypes = {
-  classes: PropTypes.object.isRequired,
-  logoutUser: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired,
-  uploadImage: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(Profile);

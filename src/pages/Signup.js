@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
-import PropTypes from 'prop-types';
 import AppIcon from '../images/icon.png';
 
 // Redux imports
@@ -141,12 +140,6 @@ const Signup = (props) => {
   );
 };
 
-Signup.propTypes = {
-  classes: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired,
-  UI: PropTypes.object.isRequired,
-  logoutUser: PropTypes.func.isRequired
-};
 const styles = (theme) => ({
   ...theme.spreadTheme
 });
